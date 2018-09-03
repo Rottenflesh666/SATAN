@@ -63,10 +63,14 @@ class App extends Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault();
+    let token = localStorage.getItem("id_token");
+    if(token !== null )
+      token = "Bearer " + localStorage.getItem("id_token");
     fetch("/db", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": token
       },
       body: JSON.stringify(this.state)
     })
@@ -89,6 +93,9 @@ class App extends Component {
               fullName: "Not found X_X"
             }
           });
+        } else if(response.status === 403) {
+            localStorage.removeItem("id_token");
+            this.props.history.push("/login");
         }
       })
       .catch((err) => {

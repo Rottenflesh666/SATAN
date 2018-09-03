@@ -1,5 +1,4 @@
 const path = require("path");
-//global elite
 
 module.exports = (app) => {
   app.get("*", function(req, res) {

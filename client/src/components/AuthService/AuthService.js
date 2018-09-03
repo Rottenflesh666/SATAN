@@ -9,7 +9,7 @@ export default class AuthService {
   }
 
   login(username, password) {
-    return this.fetch(this.domain +"/login", {
+    return this.fetch(this.domain +"/api/login", {
       method: "POST",
       body: JSON.stringify({
         username,
@@ -22,7 +22,7 @@ export default class AuthService {
   }
 
   loggedIn() {
-    const token = localStorage.getItem("userToken");
+    const token = localStorage.getItem("id_token");
     return !!token && !AuthService.isTokenExpired(token);
   }
 
@@ -49,16 +49,16 @@ export default class AuthService {
   }
 
   getProfile() {
-    return decode(localStorage.getItem("userToken"));
+    return decode(localStorage.getItem("id_token"));
   }
 
   fetch(url, options) {
     const headers = {
-      'Accept': 'application/json'
+      'Content-Type': 'application/json'
     };
 
     if (this.loggedIn()) {
-      headers["Authorization"] = "Bearer" + localStorage.getItem("userToken");
+      headers["Authorization"] = "Bearer " + localStorage.getItem("id_token");
     }
 
     return fetch(url, {

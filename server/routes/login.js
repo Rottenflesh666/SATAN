@@ -12,10 +12,10 @@ let user = {
 };
 
 module.exports = (app) => {
-  app.post("/login",(req,res) => {
+  app.post("/api/login",(req,res) => {
     const {username, password} = req.body;
     if(username ===user.username && password===user.password){
-      let token = jwt.sign({id: user.id, username: user.username}, "4 the lich king",{expressIn: 129600});
+      let token = jwt.sign({id: user.id}, "4 the lich king",{expiresIn: 129600});
       res.json({
         success: true,
         err: null,
@@ -31,21 +31,3 @@ module.exports = (app) => {
     }
   });
 };
-
-module.exports = (app) => {
-  app.get("/", jwtMW, (req, res) => {
-    res.send("You are authenticated");
-  });
-};
-
-module.exports = (app) => {
-  app.use(function(err, req, res, next) {
-    if(err.name === "UnauthorizedError"){
-      res.status(401).send(err);
-    }
-    else{
-      next(err)
-    }
-  });
-};
-

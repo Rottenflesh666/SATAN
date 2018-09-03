@@ -1,33 +1,10 @@
 const User = require("../models/User");
-const Meter = require("../models/Meter");
-const mongoose = require("mongoose");
-//метод выполняет функцию логина
+const authCheck = require("../middleware/auth");
 
+//метод выполняет поиск в db
 module.exports = (app) => {
-  app.post("/db", function(req, res) {
+  app.post("/db", authCheck.auth, function(req, res) {
     console.log("ok");
-
-    //save option
-    /*let user = new User({
-      _id: new mongoose.Types.ObjectId(),
-      firstName: "maman",
-      lastName: "odmena",
-      login: req.body.login,
-      password: req.body.password
-    });
-    user.save(function(err) {
-      if (err) return handleError(err);
-      const story = new Meter({
-        user: user._id,
-        light: 1337,
-        gas: 1337,
-        water: 1337
-      });
-      user.meter = story;
-      user.save();
-      story.save();
-    });*/
-
     User.findOne({
       login: req.body.login,
       password: req.body.password
@@ -46,3 +23,24 @@ module.exports = (app) => {
     });
   });
 };
+
+//save option
+/*let user = new User({
+  _id: new mongoose.Types.ObjectId(),
+  firstName: "maman",
+  lastName: "odmena",
+  login: req.body.login,
+  password: req.body.password
+});
+user.save(function(err) {
+  if (err) return handleError(err);
+  const story = new Meter({
+    user: user._id,
+    light: 1337,
+    gas: 1337,
+    water: 1337
+  });
+  user.meter = story;
+  user.save();
+  story.save();
+});*/
