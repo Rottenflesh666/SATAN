@@ -1,7 +1,8 @@
 const User = require("../models/User");
+const Meter = require("../models/Meter");
 const authCheck = require("../middleware/auth");
 
-//метод выполняет поиск в db
+//метод выполняет функцию логина
 module.exports = (app) => {
   app.post("/db", authCheck.auth, function(req, res) {
     console.log("ok");
